@@ -13,8 +13,10 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import egoi.aac.demo.dto.CategoryDTO;
 import egoi.aac.demo.entity.EgoiCategory;
 import egoi.aac.demo.entity.EgoiCategoryRepository;
+import egoi.aac.demo.mapper.CategoryMapper;
 import javassist.tools.web.BadHttpRequest;
 
 @RestController
@@ -22,25 +24,23 @@ import javassist.tools.web.BadHttpRequest;
 public class EGoiGateway {
 	@Autowired
     private EgoiCategoryRepository repository;
+	
+	@Autowired
+	private CategoryMapper categoryMapper;
 
     @GetMapping(path = "/")
-    public Iterable<EgoiCategory> findAll() {
-        return repository.findAll();
+    public List<CategoryDTO> findAll() {
+        return categoryMapper.mapRepoToDTOCollection(repository.findAll());
     }
     
     @GetMapping(path = "/{name}")
-    public List<EgoiCategory> find(@PathVariable("name") String name) {
-        return repository.findAllbyName(name);
+    public List<CategoryDTO> find(@PathVariable("name") String name) { 	
+        return categoryMapper.mapRepoToDTOCollection(repository.findAllbyName(name));
     }
-
-//    @PostMapping(consumes = "application/json")
-//    public List<EgoiCategory> create(@RequestBody List<EgoiCategory> EgoiCategory) {
-//        return repository.saveAll(EgoiCategory);
-//    }
     
     @PostMapping(consumes = "application/json")
-    public EgoiCategory createSimple(@RequestBody EgoiCategory EgoiCategory) {
-        return repository.save(EgoiCategory);
+    public CategoryDTO createSimple(@RequestBody EgoiCategory EgoiCategory) {
+        return categoryMapper.mapRepoToDTO(repository.save(EgoiCategory));
     }
 
     @DeleteMapping(path = "{id}")
@@ -49,10 +49,10 @@ public class EGoiGateway {
     }
 
     @PutMapping(path = "{id}")
-    public EgoiCategory update(@PathVariable("id") int id, @RequestBody EgoiCategory EgoiCategory) throws BadHttpRequest {
+    public CategoryDTO update(@PathVariable("id") int id, @RequestBody EgoiCategory EgoiCategory) throws BadHttpRequest {
         if (repository.existsById(id)) {
             EgoiCategory.setId(id);
-            return repository.save(EgoiCategory);
+            return categoryMapper.mapRepoToDTO(repository.save(EgoiCategory));
         } else {
             throw new BadHttpRequest();
         }
