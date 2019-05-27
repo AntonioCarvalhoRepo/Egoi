@@ -11,7 +11,7 @@ import lombok.Data;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class SubCategoryDTO {
 	@JsonProperty("id")
-	private String id;
+	private int id;
 	@JsonProperty("name")
 	private String name;
 	@JsonProperty("created")

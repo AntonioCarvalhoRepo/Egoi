@@ -11,10 +11,14 @@ import javax.persistence.TemporalType;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Entity
 @Data
+@AllArgsConstructor
+@NoArgsConstructor
 public class EgoiCategory {
 	@Id
 	@Column(name="id", unique = false, nullable = false)
@@ -35,10 +39,4 @@ public class EgoiCategory {
 	@Temporal(TemporalType.TIMESTAMP)
 	@Column(name="modified")
 	public Date modified;
-	
-	public EgoiCategory(int id ,int category_id, String name) {
-		this.id=id;
-		this.name= name;
-		this.category_id = category_id;
-	}
 }

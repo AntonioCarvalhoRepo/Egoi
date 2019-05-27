@@ -29,7 +29,7 @@ public class EGoiApplicationTests {
 	{
 		  mvc.perform( MockMvcRequestBuilders
 			      .post("/")
-			      .content(asJsonString(new EgoiCategory(1,1,"Test")))
+			      .content(asJsonString(new EgoiCategory(1,1,"Test",null,null)))
 			      .contentType(MediaType.APPLICATION_JSON)
 			      .accept(MediaType.APPLICATION_JSON))
 			      .andExpect(status().isOk())

@@ -11,5 +11,8 @@ public interface EgoiCategoryRepository extends JpaRepository<EgoiCategory, Inte
 
 	@Query("SELECT egoi FROM EgoiCategory egoi WHERE egoi.name=?1")
 	List<EgoiCategory> findAllbyName(String name);
-
+	
+	
+	@Query("SELECT egoi FROM EgoiCategory egoi WHERE egoi.category_id=?1")
+	List<EgoiCategory> findSubCategories(int category_id);
 }

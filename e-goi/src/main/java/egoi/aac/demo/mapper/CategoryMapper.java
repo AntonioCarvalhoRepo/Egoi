@@ -6,37 +6,43 @@ import java.util.List;
 import org.springframework.stereotype.Component;
 
 import egoi.aac.demo.dto.CategoryDTO;
+import egoi.aac.demo.dto.SubCategoryDTO;
 import egoi.aac.demo.entity.EgoiCategory;
 
 @Component
 public class CategoryMapper {
-	
-	public CategoryDTO mapRepoToDTO(EgoiCategory repoData) {
-		CategoryDTO mappedDTO = new CategoryDTO();
-		
-		mappedDTO.setId(repoData.getId());
-		mappedDTO.setName(repoData.getName());
-		mappedDTO.setCreated(repoData.getCreated());
-		mappedDTO.setModified(repoData.getModified());
-		
-		return mappedDTO;		
-	}
-	
-	public List<CategoryDTO> mapRepoToDTOCollection(List<EgoiCategory> repoDataCollection) {
-		List<CategoryDTO> dtoCollection = new ArrayList<CategoryDTO>();
-		
-		repoDataCollection.stream().forEach(x -> {
-			CategoryDTO mappedDTO = new CategoryDTO();		
-			mappedDTO.setId(x.getId());
-			mappedDTO.setName(x.getName());
-			mappedDTO.setCreated(x.getCreated());
-			mappedDTO.setModified(x.getModified());
-			
-			dtoCollection.add(mappedDTO);
-		});
 
+	public CategoryDTO mapRepoToDTO(EgoiCategory repoData, List<EgoiCategory> subCategoryList) {
+		CategoryDTO simpleDTO = mapRepoToCategoryDTO(repoData);
 		
-		return dtoCollection;		
+		if(subCategoryList.size() > 0) {
+			List<SubCategoryDTO> mySubCategories = new ArrayList<SubCategoryDTO>();
+			subCategoryList.stream().forEach(x -> {
+				mySubCategories.add(mapRepoToSubCategoryDTO(x));
+			});
+			simpleDTO.setSubCategories(mySubCategories);			
+		}
+
+		return simpleDTO;
 	}
 
+	public CategoryDTO mapRepoToCategoryDTO(EgoiCategory repoData) {
+		CategoryDTO mappedCategoryDTO = new CategoryDTO();
+
+		mappedCategoryDTO.setId(repoData.getId());
+		mappedCategoryDTO.setName(repoData.getName());
+		mappedCategoryDTO.setCreated(repoData.getCreated());
+		mappedCategoryDTO.setModified(repoData.getModified());
+		return mappedCategoryDTO;
+	}
+	
+	private SubCategoryDTO mapRepoToSubCategoryDTO(EgoiCategory repoData) {
+		SubCategoryDTO mappedSubCategoryDTO = new SubCategoryDTO();
+
+		mappedSubCategoryDTO.setId(repoData.getId());
+		mappedSubCategoryDTO.setName(repoData.getName());
+		mappedSubCategoryDTO.setCreated(repoData.getCreated());
+		mappedSubCategoryDTO.setModified(repoData.getModified());
+		return mappedSubCategoryDTO;
+	}
 }
