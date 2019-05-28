@@ -8,7 +8,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-import org.h2.command.dml.Replace;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
@@ -27,17 +26,29 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import egoi.aac.demo.entity.EgoiCategory;
 import egoi.aac.demo.entity.EgoiCategoryRepository;
 
+/**
+ * The Class EGoiApplicationTests.
+ * @author Antonio Carvalho
+ */
 @RunWith(SpringRunner.class)
 @SpringBootTest
 @AutoConfigureMockMvc
 @AutoConfigureTestDatabase
 public class EGoiApplicationTests {
+	
+	/** The mvc. */
 	@Autowired
 	private MockMvc mvc;
 	
+	/** The category repo. */
 	@Mock
 	private EgoiCategoryRepository categoryRepo;
 
+	/**
+	 * Creates the category API.
+	 *
+	 * @throws Exception the exception
+	 */
 	@Test
 	public void createCategoryAPI() throws Exception {
 		mvc.perform(MockMvcRequestBuilders.post("/").content(asJsonString(new EgoiCategory(1, 1, "Test", null, null)))
@@ -45,6 +56,11 @@ public class EGoiApplicationTests {
 				.andExpect(MockMvcResultMatchers.jsonPath("$.id").exists());
 	}
 
+	/**
+	 * Update category then find by name API.
+	 *
+	 * @throws Exception the exception
+	 */
 	@Test
 	public void updateCategoryThenFindByNameAPI() throws Exception {
 		List<EgoiCategory> dummyList = new ArrayList<EgoiCategory>();
@@ -59,6 +75,11 @@ public class EGoiApplicationTests {
 				.andExpect(MockMvcResultMatchers.jsonPath("$.name").exists());
 	}
 
+	/**
+	 * Delete category.
+	 *
+	 * @throws Exception the exception
+	 */
 	@Test
 	public void deleteCategory() throws Exception {
 		EgoiCategory dummyCategory = new EgoiCategory(1, 1, "Test", null, null);
@@ -68,6 +89,12 @@ public class EGoiApplicationTests {
 		mvc.perform(delete("/{id}", dummyCategory.getId())).andExpect(status().isOk());
 	}
 
+	/**
+	 * As json string.
+	 *
+	 * @param the obj
+	 * @return the string
+	 */
 	public static String asJsonString(final Object obj) {
 		try {
 			return new ObjectMapper().writeValueAsString(obj);

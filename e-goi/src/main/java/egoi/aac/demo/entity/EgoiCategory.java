@@ -16,28 +16,36 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+/**
+ * Instantiates a Category Entity.
+ * @author Antonio Carvalho
+ */
 @Entity
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 @Table(name = "egoi_category")
 public class EgoiCategory {
+	
+	/** The id. */
 	@Id
 	@Column(name="id", unique = false, nullable = false)
 	public int id;
 	
+	/** The category id. */
 	@Column(name="category_id")
 	public int category_id;
 	
+	/** The name. */
 	@Column(name="name")
 	public String name;
 	
-	@CreationTimestamp
+	/** The created. */
 	@Temporal(TemporalType.TIMESTAMP)
 	@Column(name="created")	
 	public Date created;
 	
-	@UpdateTimestamp
+	/** The modified. */
 	@Temporal(TemporalType.TIMESTAMP)
 	@Column(name="modified")
 	public Date modified;

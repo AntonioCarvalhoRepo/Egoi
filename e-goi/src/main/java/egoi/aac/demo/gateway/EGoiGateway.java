@@ -20,15 +20,28 @@ import egoi.aac.demo.entity.EgoiCategoryRepository;
 import egoi.aac.demo.mapper.CategoryMapper;
 import javassist.tools.web.BadHttpRequest;
 
+/**
+ * The Class EGoiGateway.
+
+ * @author Antonio Carvalho
+ */
 @RestController
 @RequestMapping(path = "/", produces = MediaType.APPLICATION_JSON_VALUE)
 public class EGoiGateway {
+	
+	/** The repository. */
 	@Autowired
     private EgoiCategoryRepository repository;
 	
+	/** The category mapper. */
 	@Autowired
 	private CategoryMapper categoryMapper;
 
+    /**
+     * Find all.
+     *
+     * @return the list
+     */
     @GetMapping(path = "/")
     public List<CategoryDTO> findAll() {
     	List<CategoryDTO> myMappedDTO = new ArrayList<CategoryDTO>();
@@ -41,6 +54,12 @@ public class EGoiGateway {
     	return myMappedDTO;
     }
     
+    /**
+     * Find by name.
+     *
+     * @param name
+     * @return list of records whose name is passed by parameter
+     */
     @GetMapping(path = "/{name}")
     public List<CategoryDTO> find(@PathVariable("name") String name) { 	
         List<CategoryDTO> myMappedDTO = new ArrayList<CategoryDTO>();
@@ -53,16 +72,35 @@ public class EGoiGateway {
     	return myMappedDTO;
     }
     
+    /**
+     * Creates a simple record.
+     *
+     * @param the egoi category
+     * @return the category DTO
+     */
     @PostMapping(consumes = "application/json")
     public CategoryDTO createSimple(@RequestBody EgoiCategory EgoiCategory) {
         return categoryMapper.mapRepoToCategoryDTO(repository.save(EgoiCategory));
     }
 
+    /**
+     * Delete.
+     *
+     * @param id
+     */
     @DeleteMapping(path = "{id}")
     public void delete(@PathVariable("id") int id) {
         repository.deleteById(id);
     }
 
+    /**
+     * Update.
+     *
+     * @param id
+     * @param the egoi category
+     * @return the category DTO
+     * @throws the bad http request
+     */
     @PutMapping(path = "{id}")
     public CategoryDTO update(@PathVariable("id") int id, @RequestBody EgoiCategory EgoiCategory) throws BadHttpRequest {
         if (repository.existsById(id)) {
