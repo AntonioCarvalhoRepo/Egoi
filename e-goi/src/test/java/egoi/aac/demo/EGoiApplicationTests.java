@@ -92,7 +92,7 @@ public class EGoiApplicationTests {
 	/**
 	 * As json string.
 	 *
-	 * @param the obj
+	 * @param  obj
 	 * @return the string
 	 */
 	public static String asJsonString(final Object obj) {
